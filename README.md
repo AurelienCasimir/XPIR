@@ -99,6 +99,9 @@ Port used by the server to listen to incoming connections, by default 1234.
 `--db-generator`                        
 Generate a fake database with random elements instead of reading it from a directory. This is useful for performance tests. It allows to deal with arbitrary databases without having to build them on the file-system and to evaluate performance costs without considering disk access limitations.
 
+`--db-mix`                        
+Read the database from a directory and then generate fake entries to reach arg files. The directory must only contain files which are named with number between 0 and arg-1. 
+
 `-n, --db-generator-files arg (=10)`    
 Number of files for the virtual database provided by the DB generator.
 
@@ -123,6 +126,9 @@ Define the port at which the client will try to contact the PIRServer.
 
 `-c, --autochoice`               
 Don't display the catalog of database elements and automatically choose the first element without waiting for user input.
+
+`--autochoice-value arg (=0)`               
+Don't display the catalog of database elements and automatically choose the element arg without waiting for user input. Must be used with the -c option. 
 
 `--dry-run`                          
 Enable dry-run mode. In this mode the client does not send a PIR Query. It runs the optimizer taking into account the command-line options and outputs the best parameters for each cryptosystem (currently NoCryptography, Paillier and LWE) with details on the costs evaluated for each phase (query generation, query sending, reply generation, reply sending, reply decryption). If a server is available it interacts with it to set the parameters: client-server throughput and server-client throughput. It also requests from the server the performance cache to evaluate how fast the server can process the database for each possible set of cryptographic parameters. If no server is available it uses default performance measures. The other parameters are set for the default example: a thousand mp3 files over ADSL, aggregation disabled and security k=80. Each of these parameters can be overridden on the command line.
