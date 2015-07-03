@@ -21,6 +21,7 @@
 static const std::string DEFAULT_IP("127.0.0.1");
 static const int DEFAULT_PORT = 1234;
 static const bool DEFAULT_AUTOCHOICE = false;
+static const uint64_t DEFAULT_AUTOCHOICE_VALUE = 0;
 
 // Optimizer constants
 static const int DEFAULT_SECURITY = 80;
@@ -67,6 +68,10 @@ void defineClientOptions(ClientParams* paramsPtr, po::options_description* odptr
     
     ("autochoice,c", 
      "Auto-choose the first file")
+
+     ("autochoice-value", 
+     po::value<uint64_t>(&paramsPtr->autochoiceValue)->default_value(DEFAULT_AUTOCHOICE_VALUE),
+     "Auto-choose the asked file (must be used with -c option)")
     
     ("dry-run", 
      "Enable dry-run mode")
@@ -149,11 +154,20 @@ void processOptions(FixedVars* varsPtr, ClientParams* paramsPtr, po::variables_m
   {
     std::cout << "CLI: Upload port set to " << paramsPtr->port << std::endl;
   }
-  
+
+  paramsPtr->autochoice = false;
   if(vm.count("autochoice")) 
   {
-    std::cout << "CLI: Auto-choice activated" << std::endl;
     paramsPtr->autochoice = true;
+    paramsPtr->autochoiceValue = 0;
+	if(vm.count("autochoice-value")) 
+	  {
+	    paramsPtr->autochoiceValue = vm["autochoice-value"].as<uint64_t>();
+	    std::cout << "CLI: Auto-choice activated" << std::endl;
+	    std::cout << "CLI: Auto-choice value set to " << paramsPtr->autochoiceValue << std::endl;
+	  }
+    std::cout << "CLI: Auto-choice activated" << std::endl;
+    std::cout << "CLI: Auto-choice value set to " << paramsPtr->autochoiceValue << std::endl;
   }
   
   if(vm.count("dry-run")) 

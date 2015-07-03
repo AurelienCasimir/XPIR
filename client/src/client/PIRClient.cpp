@@ -273,7 +273,7 @@ void PIRClientSimple::rcvCryptoParams() {
  **/
 void PIRClientSimple::chooseFile() 
 {
-	chosenElement = 0;
+	chosenElement = clientParams.autochoiceValue;
 
   if(!clientParams.autochoice)
 	{

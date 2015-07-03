@@ -56,6 +56,7 @@ struct ClientParams
 
   // Interface params
   bool autochoice;
+  uint64_t autochoiceValue;
   bool verboseoptim;
   bool dontwrite;
 
