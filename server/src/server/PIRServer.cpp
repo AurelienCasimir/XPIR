@@ -24,7 +24,7 @@
  *		- tcp::endpoint& endpoint_down : download enpoint ;
  *		- tcp::endpoint& endpoint_up   : upload endpoit.
  **/
-PIRServer::PIRServer(boost::asio::io_service &ios, unsigned int port, uint64_t split_value, bool usedbgenerator, uint64_t dbgenerator_n, uint64_t dbgenerator_l) : 
+PIRServer::PIRServer(boost::asio::io_service &ios, unsigned int port, uint64_t split_value, bool usedbgenerator, bool usedbmix, uint64_t dbgenerator_n, uint64_t dbgenerator_l) : 
 	acceptor(ios, tcp::endpoint(tcp::v4(), port)),
   drivenMode(true),
   pirParamsFilePath("exp/PIRParams.cfg"),
@@ -38,6 +38,11 @@ PIRServer::PIRServer(boost::asio::io_service &ios, unsigned int port, uint64_t s
   {
     std::cout << "PIRServer: Launching DBGenerator" << std::endl;
     dbhandler = new DBGenerator(dbgenerator_n, dbgenerator_l, false); 
+  }
+  else if (usedbmix)
+  {
+    std::cout << "PIRServer: Launching DBMix" << std::endl;
+    dbhandler = new DBMix(dbgenerator_n); 
   }
   else if (split_value == 1)
   {

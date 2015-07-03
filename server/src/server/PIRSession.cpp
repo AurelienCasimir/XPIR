@@ -424,8 +424,9 @@ void PIRSession::downloadWorker()
       if (i==0 && j == 0) cout << "PIRSession: Waiting for query elements ..." << endl;
         // Get a query element 
          //( async_read(sessionSocket, boost_buffer,boost::bind(&blo,boost::asio::placeholders::error)) );
-        if (read(sessionSocket, boost_buffer) < msg_size )
-          writeWarningMessage(__FUNCTION__, "Query element not entirely recieved");	
+        if (read(sessionSocket, boost_buffer) < msg_size ) {
+          writeWarningMessage(__FUNCTION__, "Query element not entirely recieved");
+	}	
 //  std::cout <<"PIRSession: " << total_elts << " query elements received in " << omp_get_wtime() - start << std::endl;
 
         // Allocate the memory for the element, copy it, and point to it with the query buffer  

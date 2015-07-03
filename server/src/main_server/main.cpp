@@ -27,6 +27,7 @@ int main(int argc, char* argv[])
 
   int port = 1234;
   bool usedbgenerator = false;
+  bool usedbmix = false;
   uint64_t dbgenerator_n = 10, dbgenerator_l = 12800000;
   int driven = -1;
   uint64_t split_value = 1; 
@@ -42,6 +43,7 @@ int main(int argc, char* argv[])
 		("db-generator-files,n", po::value<uint64_t>(&dbgenerator_n)->default_value(10), "Number of files for the DB generator")
 		("db-generator-filesize,l", po::value<uint64_t>(&dbgenerator_l)->default_value(12800000), "Size of file for the DB generator")
 		("db-generator", "Generate the database instead of reading it from a directory")
+		("db-mix", po::value<uint64_t>(&dbgenerator_n)->default_value(10), "Read the database from a directory and then generate fake entries to reach arg files")
     ("no-pipeline", "No pipeline mode");
 
 	po::variables_map vm;
@@ -94,6 +96,13 @@ int main(int argc, char* argv[])
      << " l=" << dbgenerator_l << std::endl;
     usedbgenerator = true;
   }
+  if (vm.count("db-mix"))
+  {
+    dbgenerator_n = vm["db-mix"].as<uint64_t>();
+    std::cout << "CLI: DBMix requested with params n=" << dbgenerator_n
+     <<std::endl;
+    usedbmix = true;
+  }
     
   try
   {
@@ -102,7 +111,7 @@ int main(int argc, char* argv[])
     signals.async_wait(
     boost::bind(&boost::asio::io_service::stop, &io_service));
 
-    PIRServer server(io_service, port, split_value, usedbgenerator, dbgenerator_n, dbgenerator_l);
+    PIRServer server(io_service, port, split_value, usedbgenerator, usedbmix, dbgenerator_n, dbgenerator_l);
 
     if (vm.count("no-pipeline"))
     {

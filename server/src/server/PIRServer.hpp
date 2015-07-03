@@ -25,6 +25,7 @@
 #include "../server/DBHandler.hpp"
 #include "../server/DBDirectoryProcessor.hpp"
 #include "../server/DBGenerator.hpp"
+#include "../server/DBMix.hpp"
 
 #define DEFAULT_PORT 1234
 
@@ -48,7 +49,7 @@ class PIRServer
 
 	public:
 		PIRServer(boost::asio::io_service &ios, unsigned int port, uint64_t split_value, 
-        bool usedbgenerator, uint64_t dbgenerator_n, uint64_t dbgenerator_l);
+        bool usedbgenerator, bool usedbmix, uint64_t dbgenerator_n, uint64_t dbgenerator_l);
 		~PIRServer();
     void serve();
     void readPIRParamsFromFile(const std::string& file_path);
