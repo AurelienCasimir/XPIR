@@ -69,7 +69,7 @@ DBMix::DBMix(uint64_t nbStreams)
 		std::cout << "DBMix: Error opening database directory " << std::endl;
 	}
 
-	std::cout << "DBMix: The size of the database is " << maxFileBytesize*file_list.size() << " bytes" << std::endl;
+	std::cout << "DBMix: The size of the database is " << maxFileBytesize*real_file_list.size() << " bytes" << std::endl;
 	std::cout << "DBMix: The number of elements in the catalog is " << file_list.size() << std::endl;
 }
 
@@ -106,7 +106,7 @@ std::string DBMix::getCatalog(const bool typeOfCatalog) {
 }
 
 uint64_t DBMix::getDBSizeBits() {
-	return maxFileBytesize*file_list.size()*8;
+	return maxFileBytesize*real_file_list.size()*8;
 }
 uint64_t DBMix::getNbStream() {
 	return  file_list.size();
