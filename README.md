@@ -100,10 +100,10 @@ Port used by the server to listen to incoming connections, by default 1234.
 Generate a fake database with random elements instead of reading it from a directory. This is useful for performance tests. It allows to deal with arbitrary databases without having to build them on the file-system and to evaluate performance costs without considering disk access limitations.
 
 `--db-mix`                        
-Read the database from a directory and then generate fake entries to reach arg files. The directory must only contain files which are named with number between 0 and arg-1. 
+Read the database from a directory and then generate fake entries to reach n files. The directory must only contain files which are named with number between 0 and n-1. 
 
 `-n, --db-generator-files arg (=10)`    
-Number of files for the virtual database provided by the DB generator.
+Number of files for the virtual database provided by the DB generator or total number of files in the database when using DBMix.
 
 `-l [ --db-generator-filesize ] arg (=12800000)`    
 Filesize in bytes for the files in the virtual database provided by the DB generator.

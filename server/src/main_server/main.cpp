@@ -40,10 +40,10 @@ int main(int argc, char* argv[])
 		("load_file,L", po::value<std::string>(), "Load PIR parameters from file.")
     ("split_file,s", po::value<uint64_t>(&split_value)->default_value(1), "Only use first file in db directory and split it in arg elements.")
 		("port,p", po::value<int>(&port)->default_value(1234), "Port used, default")
-		("db-generator-files,n", po::value<uint64_t>(&dbgenerator_n)->default_value(10), "Number of files for the DB generator")
+		("db-generator-files,n", po::value<uint64_t>(&dbgenerator_n)->default_value(10), "Number of files for the DB generator or DBMix")
 		("db-generator-filesize,l", po::value<uint64_t>(&dbgenerator_l)->default_value(12800000), "Size of file for the DB generator")
 		("db-generator", "Generate the database instead of reading it from a directory")
-		("db-mix", po::value<uint64_t>(&dbgenerator_n)->default_value(10), "Read the database from a directory and then generate fake entries to reach arg files")
+		("db-mix", "Read the database from a directory and then generate fake entries to reach arg files")
     ("no-pipeline", "No pipeline mode");
 
 	po::variables_map vm;
@@ -98,7 +98,6 @@ int main(int argc, char* argv[])
   }
   if (vm.count("db-mix"))
   {
-    dbgenerator_n = vm["db-mix"].as<uint64_t>();
     std::cout << "CLI: DBMix requested with params n=" << dbgenerator_n
      <<std::endl;
     usedbmix = true;
