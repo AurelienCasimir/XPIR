@@ -32,7 +32,7 @@
 #include <omp.h>
 
 #define DEFAULT_DIR_NAME "db/"
-#define NB_FILE_DESCRIPTORS 500000
+#define NB_FILE_DESCRIPTORS 50
 
 class DBMix : public DBHandler
 {

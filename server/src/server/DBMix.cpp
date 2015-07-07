@@ -116,35 +116,26 @@ uint64_t DBMix::getmaxFileBytesize() {
 }
 
 std::ifstream* DBMix::openStream(uint64_t streamNb, uint64_t requested_offset) {
-	std::string local_directory(DEFAULT_DIR_NAME);
-	std::ifstream* is = fdPool.back();
-	fdPool.pop_back();
-	// When there is no splitting, each ifstream is associated with a real file 
-	// (at least when no aggregation is done which is the case for now)
-	if(find(real_file_list.begin(), real_file_list.end(), std::to_string(streamNb)) != real_file_list.end()) 
-		{
-			is->open( local_directory + file_list[streamNb], std::ios::binary );
-			is->seekg(requested_offset);
-		return is;
-	}
-	// When a fake file is requested no ifstream is returned
-	else
-		return NULL;
+    std::string local_directory(DEFAULT_DIR_NAME);
+    // When there is no splitting, each ifstream is associated with a real file
+    // (at least when no aggregation is done which is the case for now)
+    if(find(real_file_list.begin(), real_file_list.end(), std::to_string(streamNb)) != real_file_list.end())
+    {
+      std::ifstream* is = fdPool.back();
+      fdPool.pop_back();
+        is->open( local_directory + file_list[streamNb], std::ios::binary );
+        is->seekg(requested_offset);
+        return is;
+    }
+    // When a fake file is requested no ifstream is returned
+    else
+        return NULL;
 }
 
 uint64_t DBMix::readStream(std::ifstream* s, char * buf, uint64_t size) {
 	//Read a real file
 	if(s != NULL)
 	{
-
-		std::streampos begin, end;
-		begin = s->tellg();
-		s->seekg (0, std::ios::end);
-		end = s->tellg();
-		s->seekg (0, std::ios::beg);
-		//std::cout << "size: " << (end-begin) << " bytes." << std::endl;
-		size=end-begin;		
-
 		uint64_t sizeRead=0;
 		//std::cout << "sizeRead = "<<sizeRead<<" size = "<<size<<std::endl;
 		while(sizeRead<size) {
@@ -155,7 +146,7 @@ uint64_t DBMix::readStream(std::ifstream* s, char * buf, uint64_t size) {
 				//		std::cout << "padding = "<<size-sizeRead<<std::endl;
 				bzero(buf+sizeRead,size-sizeRead);
 				sizeRead=size;
-			}
+			}	
 		}
 	}
 	// Read a fake file
