@@ -164,7 +164,6 @@ uint64_t DBDirectoryProcessor::getmaxFileBytesize() {
 
 std::ifstream* DBDirectoryProcessor::openStream(uint64_t streamNb, uint64_t requested_offset) {
 	std::string local_directory(DEFAULT_DIR_NAME);
-	std::cout << "DBDirectoryProcessor: Opening the file number " << streamNb << std::endl;
 	std::ifstream* is = fdPool.back();
 	fdPool.pop_back();
 	// When there is no splitting, each ifstream is associated with a real file 
@@ -182,7 +181,6 @@ std::ifstream* DBDirectoryProcessor::openStream(uint64_t streamNb, uint64_t requ
 }
 
 uint64_t DBDirectoryProcessor::readStream(std::ifstream* s, char * buf, uint64_t size) {
-	std::cout << "DBDirectoryProcessor: Reading a file" << std::endl;
 	uint64_t sizeRead=0;
 	//std::cout << "sizeRead = "<<sizeRead<<" size = "<<size<<std::endl;
 	while(sizeRead<size) {
@@ -195,7 +193,6 @@ uint64_t DBDirectoryProcessor::readStream(std::ifstream* s, char * buf, uint64_t
 			sizeRead=size;
 		}
 	}
-	std::cout << "DBDirectoryProcessor: Buf now contains : " << buf << std::endl;
 	return size;
 }
 

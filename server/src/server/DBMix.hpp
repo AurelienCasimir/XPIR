@@ -30,7 +30,6 @@
 #include <string.h>
 #include <cstring>
 #include <omp.h>
-#include <random>
 
 #define DEFAULT_DIR_NAME "db/"
 #define NB_FILE_DESCRIPTORS 50
@@ -63,8 +62,6 @@ public:
   
 	std::streampos getFileSize( std::string filePath );
 private:
-  std::mt19937_64 random_engine; // Fixed seed of 0
-  std::uniform_int_distribution<> random_distribution;
  	uint64_t maxFileBytesize; 
 };
 

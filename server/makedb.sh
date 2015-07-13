@@ -22,8 +22,8 @@ if [[ ! -d db ]]; then
 	touch db/foo
 fi
 /bin/rm -f db/*
-for ((  i = 1 ;  i <= $2 ; i++  ))
+for ((  i = 0 ;  i < $2 ; i++  ))
 	do
-		dd if=/dev/urandom of=db/test$i count=$1 bs=1024
+		dd if=/dev/urandom of=db/$i count=$1 bs=1
 		#dd if=/dev/zero of=db/test$i count=$1 bs=1024
 	done

@@ -21,9 +21,7 @@
 /* Default constructor : no splitting           */
 /*  -> 1 input file -> 1 output stream          */
 /************************************************/
-DBMix::DBMix(uint64_t nbStreams):
-random_engine(0), // Fixed seed of 0
-random_distribution()
+DBMix::DBMix(uint64_t nbStreams)
 {
 	// TODO(feature) deal with sub-directories in the database !
 
@@ -123,7 +121,6 @@ std::ifstream* DBMix::openStream(uint64_t streamNb, uint64_t requested_offset) {
     // (at least when no aggregation is done which is the case for now)
     if(find(real_file_list.begin(), real_file_list.end(), std::to_string(streamNb)) != real_file_list.end())
     {
-	std::cout << "DBMix: Opening the file number " << streamNb << std::endl;
 	std::ifstream* is = fdPool.back();
 	fdPool.pop_back();
         is->open( local_directory + file_list[streamNb], std::ios::binary );
@@ -139,7 +136,6 @@ uint64_t DBMix::readStream(std::ifstream* s, char * buf, uint64_t size) {
 	//Read a real file
 	if(s != NULL)
 	{
-		std::cout << "DBMix: Reading a file" << std::endl;
 		uint64_t sizeRead=0;
 		//std::cout << "sizeRead = "<<sizeRead<<" size = "<<size<<std::endl;
 		while(sizeRead<size) {
@@ -152,21 +148,11 @@ uint64_t DBMix::readStream(std::ifstream* s, char * buf, uint64_t size) {
 				sizeRead=size;
 			}	
 		}
-	std::cout << "DBMix: Buf now contains : " << buf << std::endl;
 	}
 	// Read a fake file
 	else
 	{
-//#define NDSS_SNIFFER
-#ifdef NDSS_SNIFFER
-  for (int i = 0; i < size/4; i++) {
-    buf[i<<2] = random_distribution(random_engine);
-  }
-#else
-  char ccc=0xaa;
-  memset(buf, ccc++, size);
-#endif
-		//bzero(buf,size);
+		bzero(buf,size);
 	}
 	return size;
 }
