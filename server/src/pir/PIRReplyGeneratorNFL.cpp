@@ -507,12 +507,10 @@ lwe_cipher* result)
   // In order to parallelize we must ensure replies are somehow ordered 
 	// (see comment at the end of PIRReplyExtraction)
 	//#pragma omp parallel for firstprivate(result,data, lvl, queries)
-  for (unsigned int offset = 0; offset < query_size; offset += 200)
-  {
 #ifdef MULTI_THREAD
    # pragma omp parallel for
 #endif
-    for (unsigned int current_poly=0 ; current_poly < currentMaxNbPolys ; current_poly++)
+  for (unsigned int current_poly=0 ; current_poly < currentMaxNbPolys ; current_poly++)
 	  { 
 		  posix_memalign((void**) &(result[current_poly].a), 32, 
           2*cryptoMethod->getpolyDegree()*cryptoMethod->getnbModuli()*sizeof(uint64_t));
@@ -520,7 +518,9 @@ lwe_cipher* result)
           2*cryptoMethod->getpolyDegree()*cryptoMethod->getnbModuli()*sizeof(uint64_t));
 		  result[current_poly].b = (uint64_t *) result[current_poly].a +
         cryptoMethod->getpolyDegree()*cryptoMethod->getnbModuli();
-      for (unsigned int query_index = 0, ggg=0; query_index < query_size && ggg < 200 ; 
+  	for (unsigned int offset = 0; offset < query_size; offset += 200)
+  	{
+      for (unsigned int query_index = offset, ggg=0; query_index < query_size && ggg < 200 ; 
           query_index++, ggg++)
 		  {
 #ifdef SHOUP
